@@ -353,8 +353,8 @@ def render(act, theme):
     def slash(i, color):
         d, _ = act.days[i]
         x0, y0 = GX + (i // 7) * C, GY + ((d.weekday() + 1) % 7) * C
-        return (f'<line x1="{x0 + C * .27:.1f}" y1="{y0 + C * .74:.1f}" x2="{x0 + C * .67:.1f}" '
-                f'y2="{y0 + C * .2:.1f}" stroke="{color}"/>')
+        return (f'<line x1="{x0 + C * .27:.1f}" y1="{y0 + C * .2:.1f}" x2="{x0 + C * .67:.1f}" '
+                f'y2="{y0 + C * .74:.1f}" stroke="{color}"/>')
 
     out.append(f'<g stroke-width="2.3" stroke-linecap="round">')
     out += [slash(i, lv[0]) for i in range(len(act.days))]
