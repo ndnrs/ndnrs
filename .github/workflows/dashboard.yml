@@ -1,0 +1,39 @@
+name: ndnrs dashboard
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/dashboard.py"
+      - ".github/workflows/dashboard.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: gerar painel
+        env:
+          GH_TOKEN: ${{ secrets.NDNRS_TOKEN || github.token }}
+          GH_USER: ${{ github.repository_owner }}
+        run: python scripts/dashboard.py --out dist
+
+      - name: publicar no branch output
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
